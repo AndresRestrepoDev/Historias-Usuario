@@ -52,11 +52,8 @@ export const loginUser = async (req: Request, res: Response) => {
 
 export const refreshToken = async (req: Request, res: Response) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader?.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'No token provided' });
-  }
 
-  const token = authHeader.split(' ')[1];
+  const token = authHeader!.split(' ')[1];
   const newTokens = await refreshTokenService(token!);
 
   if (!newTokens) {

@@ -26,13 +26,13 @@ export const loginUserService = async (validateData: { email: string; password: 
     }
 
     const accesToken = jwt.sign(
-        { id: user.id, email: user.email }, 
+        { id: user.id, email: user.email, role: user.role }, 
         process.env.JWT_SECRET, 
         { expiresIn: '1h' }
     );
 
     const refreshToken = jwt.sign(
-        { id: user.id },
+        { id: user.id, email: user.email, role: user.role },
         process.env.JWT_SECRET_REFRESH!,
         { expiresIn: '7d' }
     );
@@ -59,13 +59,13 @@ export const refreshTokenService = async (token: string) => {
     }
 
     const newAccessToken = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
     const newRefreshToken = jwt.sign(
-      { id: user.id },
+      { id: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET_REFRESH,
       { expiresIn: '7d' }
     );
