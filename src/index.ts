@@ -3,6 +3,7 @@ import cors from 'cors';
 import 'dotenv/config';
 import { sequelize } from './config/database.ts';
 import { inicializarModelos } from './models/initModels.ts';
+import { seedDatabase } from './seeders/seed.ts';
 
 const PORT = process.env.PORT || 3002;
 
@@ -38,6 +39,8 @@ const initDB = async () => {
         inicializarModelos();
         await sequelize.sync({ alter: true }); 
         console.log('[DB] ✅ Models synchronized');
+
+        await seedDatabase();
         
     } catch (error) {
         console.error('[DB] connection to the database failed', error);
