@@ -38,7 +38,7 @@ const initDB = async () => {
 
         inicializarModelos();
         await sequelize.sync({ alter: true }); 
-        console.log('[DB] ✅ Models synchronized');
+        console.log('[DB] Models synchronized');
 
         await seedDatabase();
         
