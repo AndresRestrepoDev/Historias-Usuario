@@ -1,16 +1,13 @@
 import { DataTypes, Model, type CreationOptional, type InferAttributes, type InferCreationAttributes } from 'sequelize';
-import { sequelize } from '../config/database.ts'; // Asegúrate de que esta ruta sea correcta
+import { sequelize } from '../config/database.ts'; 
 
-export class Client extends Model<
-  InferAttributes<Client>,
-  InferCreationAttributes<Client>
-> {
+export class Client extends Model<InferAttributes<Client>, InferCreationAttributes<Client>> {
   declare id: CreationOptional<number>;
-  declare name: string; // Nombre completo de la persona o nombre de la empresa
-  declare contactEmail: string;
+  declare name: string; 
+  declare email: string;
   declare phone: string | null;
   declare address: string | null;
-  declare registeredBy: number; // Foreign key al Usuario que registró al cliente
+  declare user_id: number; // Foreign key al Usuario que registró al cliente
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 }
@@ -27,11 +24,11 @@ Client.init(
       allowNull: false,
       field: 'name',
     },
-    contactEmail: {
+    email: {
       type: DataTypes.STRING(150),
       unique: true,
       allowNull: false,
-      field: 'contact_email',
+      field: 'email',
     },
     phone: {
       type: DataTypes.STRING(50),
@@ -41,12 +38,10 @@ Client.init(
       type: DataTypes.TEXT,
       field: 'address',
     },
-    registeredBy: {
+    user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      field: 'registered_by',
-      // NOTA: Para una FK funcional, deberás definir la asociación
-      // Cliente.belongsTo(User, { foreignKey: 'registeredBy' });
+      field: 'user_id',
     },
     createdAt: {
       type: DataTypes.DATE,
