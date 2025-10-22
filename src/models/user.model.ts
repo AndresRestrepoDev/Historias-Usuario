@@ -7,6 +7,7 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
   declare email: string;
   declare password: string; 
   declare role: CreationOptional<'admin' | 'vendedor'>; 
+  declare refreshToken: CreationOptional<string | null>;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 }
@@ -42,6 +43,11 @@ User.init(
       validate: {
         isIn: [['admin', 'vendedor']],
       },
+    },
+    refreshToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      field: 'refresh_token',
     },
     createdAt: {
       type: DataTypes.DATE,
