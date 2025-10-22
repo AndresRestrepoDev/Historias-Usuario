@@ -6,7 +6,7 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
   declare name: string;
   declare email: string;
   declare password: string; 
-  declare role: CreationOptional<string>; 
+  declare role: CreationOptional<'admin' | 'vendedor'>; 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 }
@@ -37,8 +37,11 @@ User.init(
     role: {
       type: DataTypes.STRING(50),
       allowNull: false,
-      defaultValue: 'basic',
+      defaultValue: 'vendedor',
       field: 'role',
+      validate: {
+        isIn: [['admin', 'vendedor']],
+      },
     },
     createdAt: {
       type: DataTypes.DATE,

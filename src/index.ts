@@ -4,6 +4,7 @@ import 'dotenv/config';
 import { sequelize } from './config/database.ts';
 import { inicializarModelos } from './models/initModels.ts';
 import { seedDatabase } from './seeders/seed.ts';
+import AuthRouter from './routes/auth.route.ts';
 
 const PORT = process.env.PORT || 3002;
 
@@ -22,6 +23,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+
+app.use('/auth', AuthRouter);
 
 app.use((_req, res) => {
   res.status(404).json({
