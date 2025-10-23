@@ -5,6 +5,7 @@ import { sequelize } from './config/database.ts';
 import { inicializarModelos } from './models/initModels.ts';
 import { seedDatabase } from './seeders/seed.ts';
 import AuthRouter from './routes/auth.route.ts';
+import ProductRouter from './routes/product.route.ts';
 
 const PORT = process.env.PORT || 3002;
 
@@ -25,6 +26,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use('/auth', AuthRouter);
+app.use('/product', ProductRouter);
 
 app.use((_req, res) => {
   res.status(404).json({

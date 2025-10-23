@@ -7,8 +7,8 @@ export class Product extends Model<InferAttributes<Product>, InferCreationAttrib
   declare description: string | null;
   declare price: number; 
   declare stock: CreationOptional<number>; 
+  declare code: string | null;
   declare user_id: number; // Foreign key al Usuario que creó el producto
-  declare client_id: number; // Foreign key al Cliente asociado (si aplica)
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 }
@@ -41,14 +41,15 @@ Product.init(
       defaultValue: 0,
       field: 'stock',
     },
+    code: {
+      type: DataTypes.STRING(100),
+      unique: true,
+      field: 'code',
+    },
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       field: 'user_id',
-    },
-    client_id: {
-      type: DataTypes.INTEGER,
-      field: 'client_id',
     },
     createdAt: {
       type: DataTypes.DATE,

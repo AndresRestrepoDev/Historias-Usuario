@@ -38,16 +38,16 @@ export const seedDatabase = async () => {
       description: 'Numero uno en limpieza',
       price: 10,
       stock: 12,
-      user_id: admin.id,
-      client_id: client.id,
+      code: 'PROD-001',
+      user_id: admin.id
     },
     {
       name: 'Producto 2',
       description: 'Se agota rapido',
       price: 20,
       stock: 16,
-      user_id: admin.id,
-      client_id: client.id,
+      code: 'PROD-002',
+      user_id: admin.id
     },
   ];
 
