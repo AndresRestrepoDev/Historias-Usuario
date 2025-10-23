@@ -64,14 +64,17 @@ Puedes usar pgAdmin, psql o Docker para crear la base de datos indicada en .env.
 ```
     npm run listen
 
-Esto iniciará:
+    Esto iniciará:
 
-El servidor en: http://localhost:3002
-La documentación Swagger en: http://localhost:3002/docs
+    El servidor en: http://localhost:3002
+    La documentación Swagger en: http://localhost:3002/docs
 
-🧱 Estructura del proyecto
 
 ```
+6. Estructura del proyecto
+```
+
+
     src/
     ├── config/            # Configuración de DB y Swagger
     ├── controllers/       # Controladores Express
