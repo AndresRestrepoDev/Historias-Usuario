@@ -4,21 +4,11 @@ import { z } from 'zod';
 import { registerUserService } from '../services/auth.service.ts';
 import { loginUserService } from '../services/auth.service.ts';
 import { refreshTokenService } from '../services/auth.service.ts';
-
-const registerSchema = z.object({
-  name: z.string().min(3),
-  password: z.string().min(6),
-  email: z.string().email(),
-});
-
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-});
+import { LoginDTO, RegisterDTO } from '../dtos/auth.dto.ts';
 
 export const registerUser = async (req: Request, res: Response) => {
   try {
-    const validatedData = registerSchema.parse(req.body);
+    const validatedData = RegisterDTO.parse(req.body);
 
     const {email} = validatedData;
     const existingUser = await User.findOne({ where: { email } });
@@ -35,7 +25,7 @@ export const registerUser = async (req: Request, res: Response) => {
 
 export const loginUser = async (req: Request, res: Response) => {
   try {
-    const validatedData = loginSchema.parse(req.body);
+    const validatedData = LoginDTO.parse(req.body);
 
     const tokens = await loginUserService(validatedData);
     

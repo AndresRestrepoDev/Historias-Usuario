@@ -1,8 +1,10 @@
 import { User } from "../models/user.model.ts";
 import 'dotenv/config';
 import jwt from 'jsonwebtoken';
+import { UserDAO } from '../dao/user.dao.ts';
+import type { RegisterInput, LoginInput } from '../dtos/auth.dto.ts';
 
-export const registerUserService = async (validateData: { name: string; password: string; email: string }) => {
+export const registerUserService = async (validateData: RegisterInput) => {
     
     const newUser = await User.create({
       name: validateData.name,
@@ -13,9 +15,9 @@ export const registerUserService = async (validateData: { name: string; password
     return newUser;
 };
 
-export const loginUserService = async (validateData: { email: string; password: string }) => {
-  
-    const user = await User.findOne({ where: { email: validateData.email } });
+export const loginUserService = async (validateData: LoginInput) => {
+
+    const user = await UserDAO.findByEmail(validateData.email);
 
     if (!user || user.password !== validateData.password) {
       return false;
@@ -36,6 +38,8 @@ export const loginUserService = async (validateData: { email: string; password: 
         process.env.JWT_SECRET_REFRESH!,
         { expiresIn: '7d' }
     );
+
+    await UserDAO.updateRefreshToken(user.id, refreshToken);
 
     const tokens = {
         accesToken, refreshToken

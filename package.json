@@ -25,6 +25,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.9.1",
     "@types/pg": "^8.15.5",
     "nodemon": "^3.1.10",
@@ -32,7 +33,6 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@types/jsonwebtoken": "^9.0.10",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
