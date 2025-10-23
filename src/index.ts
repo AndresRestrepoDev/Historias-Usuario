@@ -7,6 +7,8 @@ import { seedDatabase } from './seeders/seed.ts';
 import AuthRouter from './routes/auth.route.ts';
 import ProductRouter from './routes/product.route.ts';
 import clientRoutes from './routes/client.route.ts';
+import orderRoutes from './routes/order.route.ts';
+
 
 
 const PORT = process.env.PORT || 3002;
@@ -30,6 +32,7 @@ app.use(express.json());
 app.use('/auth', AuthRouter);
 app.use('/product', ProductRouter);
 app.use('/client', clientRoutes);
+app.use('/order', orderRoutes);
 
 app.use((_req, res) => {
   res.status(404).json({
