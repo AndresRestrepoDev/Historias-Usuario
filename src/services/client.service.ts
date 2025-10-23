@@ -1,29 +1,23 @@
-import { Client } from "../models/client.model.ts";
+import { ClientDAO } from "../dao/client.dao.ts";
 
 export class ClientService {
-  static async getAll() {
-    return await Client.findAll();
+  static getAll() {
+    return ClientDAO.findAll();
   }
 
-  static async getById(id: number) {
-    return await Client.findByPk(id);
+  static getById(id: number) {
+    return ClientDAO.findById(id);
   }
 
-  static async create(data: any) {
-    return await Client.create(data);
+  static create(data: any) {
+    return ClientDAO.create(data);
   }
 
-  static async update(id: number, data: Partial<Client>) {
-    const client = await Client.findByPk(id);
-    if (!client) return null;
-    await client.update(data);
-    return client;
+  static update(id: number, data: any) {
+    return ClientDAO.update(id, data);
   }
 
-  static async delete(id: number) {
-    const client = await Client.findByPk(id);
-    if (!client) return null;
-    await client.destroy();
-    return client;
+  static delete(id: number) {
+    return ClientDAO.delete(id);
   }
 }

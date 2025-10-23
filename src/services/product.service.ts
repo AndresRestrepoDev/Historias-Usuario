@@ -1,29 +1,23 @@
-import { Product } from "../models/product.model.ts";
+import { ProductDAO } from "../dao/product.dao.ts";
 
 export class ProductService {
-  static async getAll() {
-    return await Product.findAll();
+  static getAll() {
+    return ProductDAO.findAll();
   }
 
-  static async getById(id: number) {
-    return await Product.findByPk(id);
+  static getById(id: number) {
+    return ProductDAO.findById(id);
   }
 
-  static async create(data: any) {
-    return await Product.create(data);
+  static create(data: any) {
+    return ProductDAO.create(data);
   }
 
-  static async update(id: number, data: Partial<Product>) {
-    const product = await Product.findByPk(id);
-    if (!product) return null;
-    await product.update(data);
-    return product;
+  static update(id: number, data: any) {
+    return ProductDAO.update(id, data);
   }
 
-  static async delete(id: number) {
-    const product = await Product.findByPk(id);
-    if (!product) return null;
-    await product.destroy();
-    return product;
+  static delete(id: number) {
+    return ProductDAO.delete(id);
   }
 }
