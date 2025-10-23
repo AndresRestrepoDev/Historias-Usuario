@@ -2,6 +2,7 @@ import { Order } from "../models/order.model.ts";
 import { OrderProduct } from "../models/order-product.model.ts";
 import { Product } from "../models/product.model.ts";
 import { sequelize } from "../config/database.ts";
+import type { Op, WhereOptions } from "sequelize";
 
 export class OrderDAO {
   static async findAll() {
@@ -49,6 +50,30 @@ export class OrderDAO {
     return sequelize.transaction(async (t) => {
       await OrderProduct.destroy({ where: { order_id: id }, transaction: t });
       return Order.destroy({ where: { id }, transaction: t });
+    });
+  }
+
+  static async findWithFilters(filters: { client_id?: number; product_id?: number }) {
+    const where: WhereOptions = {};
+
+    if (filters.client_id) {
+      where.client_id = filters.client_id;
+    }
+
+    const includeOptions: any = {
+      model: Product,
+      through: { attributes: ['quantity', 'price_at_time'] }
+    };
+
+    // Si filtra por producto_id, lo agregamos en la condición del include
+    if (filters.product_id) {
+      includeOptions.where = { id: filters.product_id };
+    }
+
+    return Order.findAll({
+      where,
+      include: [includeOptions],
+      order: [['createdAt', 'DESC']],
     });
   }
 }

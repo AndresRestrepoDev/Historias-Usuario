@@ -2,11 +2,7 @@ import { OrderDAO } from "../dao/order.dao.ts";
 import { Product } from "../models/product.model.ts";
 
 export class OrderService {
-  static async createOrder(data: {
-    client_id: number;
-    user_id: number;
-    products: { product_id: number; quantity: number }[];
-  }) {
+  static async createOrder(data: { client_id: number; user_id: number; products: { product_id: number; quantity: number }[];}) {
     const productIds = data.products.map(p => p.product_id);
     const dbProducts = await Product.findAll({ where: { id: productIds } });
 
@@ -39,5 +35,13 @@ export class OrderService {
     });
 
     return order;
+  }
+
+  static getOrdersWithFilters(query: { client_id?: string; product_id?: string }) {
+    const filters: any = {};
+    if (query.client_id) filters.client_id = Number(query.client_id);
+    if (query.product_id) filters.product_id = Number(query.product_id);
+    
+    return OrderDAO.findWithFilters(filters);
   }
 }

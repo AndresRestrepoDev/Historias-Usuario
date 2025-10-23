@@ -4,5 +4,6 @@ import { OrderController } from "../controllers/order.controller.ts";
 const router = Router();
 
 router.post('/', OrderController.createOrder);
+router.get('/', OrderController.getOrders);
 
 export default router;
