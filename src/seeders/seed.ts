@@ -1,9 +1,12 @@
 import { User } from '../models/user.model.ts';
 import { Product } from '../models/product.model.ts';
 import { Client } from '../models/client.model.ts';
+import { hashPassword } from '../utils/auth.ts';
 
 export const seedDatabase = async () => {
   console.log('[Seed] Poblando tablas...');
+
+  const adminPasswordHashed = await hashPassword('123456');
 
   // 1️⃣ Usuario admin
   const [admin] = await User.findOrCreate({
@@ -11,7 +14,7 @@ export const seedDatabase = async () => {
     defaults: {
       name: 'Administrador',
       email: 'admin@example.com',
-      password: '123456',
+      password: adminPasswordHashed,
       role: 'admin',
     },
   });

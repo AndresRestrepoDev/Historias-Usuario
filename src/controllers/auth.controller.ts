@@ -5,6 +5,7 @@ import { registerUserService } from '../services/auth.service.ts';
 import { loginUserService } from '../services/auth.service.ts';
 import { refreshTokenService } from '../services/auth.service.ts';
 import { LoginDTO, RegisterDTO } from '../dtos/auth.dto.ts';
+import type { RegisterInput, LoginInput } from '../dtos/auth.dto.ts';
 
 export const registerUser = async (req: Request, res: Response) => {
   try {
@@ -25,7 +26,7 @@ export const registerUser = async (req: Request, res: Response) => {
 
 export const loginUser = async (req: Request, res: Response) => {
   try {
-    const validatedData = LoginDTO.parse(req.body);
+    const validatedData: LoginInput = LoginDTO.parse(req.body);
 
     const tokens = await loginUserService(validatedData);
     
@@ -33,7 +34,10 @@ export const loginUser = async (req: Request, res: Response) => {
       return  res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    res.status(200).json({ message: 'Login successful', tokens, validatedData });
+    // quitar la contraseña antes de devolver cualquier dato
+    const { password, ...publicData } = validatedData;
+
+    res.status(200).json({ message: 'Login successful', tokens, user: publicData });
   } catch (error) {
     res.status(400).json({ error: error instanceof z.ZodError ? error.issues : 'Login failed' });
   }

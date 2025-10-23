@@ -3,13 +3,17 @@ import 'dotenv/config';
 import jwt from 'jsonwebtoken';
 import { UserDAO } from '../dao/user.dao.ts';
 import type { RegisterInput, LoginInput } from '../dtos/auth.dto.ts';
+import { hashPassword, comparePassword, generateToken } from '../utils/auth.ts';
+
 
 export const registerUserService = async (validateData: RegisterInput) => {
+
+    const hashed = await hashPassword(validateData.password);
     
     const newUser = await User.create({
       name: validateData.name,
       email: validateData.email,
-      password: validateData.password,
+      password: hashed,
     });
   
     return newUser;
@@ -19,13 +23,14 @@ export const loginUserService = async (validateData: LoginInput) => {
 
     const user = await UserDAO.findByEmail(validateData.email);
 
-    if (!user || user.password !== validateData.password) {
-      return false;
-    }
+    if (!user) return false;
 
     if(!process.env.JWT_SECRET || !process.env.JWT_SECRET_REFRESH) {
       throw new Error('JWT_SECRET is not defined');
     }
+
+    const valid = await comparePassword(validateData.password, user.password);
+    if (!valid) return false;
 
     const accesToken = jwt.sign(
         { id: user.id, email: user.email, role: user.role }, 
